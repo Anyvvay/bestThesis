@@ -1,0 +1,44 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+body {
+    font-family: 'Fredoka One', cursive;
+    margin: 0;
+    padding: 0;
+}
+.main {
+    background-image: url(/img/bg1.jpg);
+    text-align: center;
+    background-size: cover;
+    background-position:right;
+}
+form div input {
+    border: 0;
+    border-bottom: 1px solid black;
+    background: none;
+    color: black;
+    width: 100%;
+    padding: 8px 0 5px 0;
+    font-size: 16px;
+    outline: none;
+}
+.login-form {
+    margin: 100px 0 0 0;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 53px 19px rgba(0, 0, 0, 0.78);
+    margin-bottom: 100px;
+}
+    .login-form p {
+        font-family: 'Fredoka One', cursive;
+        font-size: 28px;
+        padding-top: 20px;
+    }
+.form-group {
+    padding-top: 30px;
+}
+.form-group button {
+    margin-bottom: 50px;
+    width: 100px;
+}
+.login-form img {
+    text-align:center;
+    padding-top: 50px;
+}

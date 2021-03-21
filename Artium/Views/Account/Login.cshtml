@@ -1,0 +1,48 @@
+﻿@model Artium.AuthModels.LoginModel
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In | Artium</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+          crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+            crossorigin="anonymous"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <link href="~/css/auth.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="row main">
+        <div class="col"></div>
+        <div class="col-4">
+            <div class="login-form">
+                <img src="~/img/logo.png" width="80" alt="LOGO" />
+                <p>Sign in to Artium</p>
+                <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true">
+                    <div class="validation" asp-validation-summary="ModelOnly"></div>
+                    <div class="form-group">
+                        <input type="text" class="email w-75" asp-for="inputData" placeholder="email or login">
+                        <span asp-validation-for="inputData" />
+                    </div>
+                    <div class="form-group">
+                        <input type="password" asp-for="Password" class="pass w-75" placeholder="password">
+                        <span asp-validation-for="Password" />
+                    </div>
+                    <br />
+                    Not a member? <a asp-action="Register" asp-controller="Account">Sign up now</a>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-outline-dark">Sign In</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
+</body>
+</html>
