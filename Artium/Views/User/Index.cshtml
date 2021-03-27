@@ -32,6 +32,15 @@
             <a asp-action="Login" asp-controller="Account" style="float: right;">Sign In</a>
             <a asp-action="Register" asp-controller="Account" style="float: right;">Sign Up</a>
         }
+        else
+        {
+        <form method="post" asp-controller="Account" asp-action="Logout" id="logout_form">
+            <a href="javascript:{}" onclick="document.getElementById('logout_form').submit();
+                                    return false;" style="float: right; padding: 14px 16px;">
+                Log out
+            </a>
+        </form>
+        }
         <div class="search-container">
             <form action="/action_page.php">
                 <input type="text" placeholder="Search.." name="search">
@@ -183,9 +192,27 @@
                     @foreach (var post in @ViewBag.WallPosts)
                     {
                     <div class="post">
-                        <p>@post.GetUserLogin()</p>
-                        <p>@post.Date</p>
-                        <p>@post.Text</p>
+                        <div class="row">
+                            <div class="col">
+                                <a href="/@post.GetUserLogin()">@post.GetUserLogin()</a>
+                            </div>
+                            <div class="col">
+                                <p>@post.Date</p>
+                            </div>
+                            <div class="col">
+                                <form asp-action="DeletePost" asp-controller="User" method="post">
+                                    <input type="number" name="id" value="@post.Id" hidden/>
+                                    <button>
+                                        delete
+                                    </button>
+                                </form>                                  
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p>@post.Text</p>
+                            </div>                        
+                        </div>
                     </div>
                     }
                 </div>

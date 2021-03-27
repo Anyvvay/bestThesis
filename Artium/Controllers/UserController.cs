@@ -180,5 +180,18 @@ namespace Artium.Controllers
             }
             return LocalRedirect("~/" + User.Identity.Name);
         }
+        [HttpPost]
+        public async Task<IActionResult> DeletePost(int id)
+        {
+            Console.WriteLine(id);
+            WallPost post = await db_post.WallPosts.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (post != null)
+            {
+                db_post.WallPosts.Remove(post);
+                db_post.SaveChanges();
+            }
+            return LocalRedirect("~/" + User.Identity.Name);
+        }
     }
 }
