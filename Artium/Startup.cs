@@ -31,9 +31,15 @@ namespace Artium
         public void ConfigureServices(IServiceCollection services)
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<UserContext>(options => options.UseSqlServer(connection));
-            services.AddDbContext<PicUserContext>(options => options.UseSqlServer(connection));
-            services.AddDbContext<WallPostContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<UserContext>(optionsBuilder => optionsBuilder.UseMySql(
+                connection,
+                new MySqlServerVersion(new Version(8, 0, 11))));
+            services.AddDbContext<PicUserContext>(optionsBuilder => optionsBuilder.UseMySql(
+                connection,
+                new MySqlServerVersion(new Version(8, 0, 11))));
+            services.AddDbContext<WallPostContext>(optionsBuilder => optionsBuilder.UseMySql(
+               connection,
+                new MySqlServerVersion(new Version(8, 0, 11))));
 
             // установка конфигурации подключения
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

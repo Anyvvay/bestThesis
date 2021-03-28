@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\comra\\OneDrive\\Рабочий стол\\bestThesis\\Artium\\Artium.csproj": {}
+    "C:\\Users\\Сергей\\Desktop\\bestThesis\\Artium\\Artium.csproj": {}
   },
   "projects": {
-    "C:\\Users\\comra\\OneDrive\\Рабочий стол\\bestThesis\\Artium\\Artium.csproj": {
+    "C:\\Users\\Сергей\\Desktop\\bestThesis\\Artium\\Artium.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\comra\\OneDrive\\Рабочий стол\\bestThesis\\Artium\\Artium.csproj",
+        "projectUniqueName": "C:\\Users\\Сергей\\Desktop\\bestThesis\\Artium\\Artium.csproj",
         "projectName": "Artium",
-        "projectPath": "C:\\Users\\comra\\OneDrive\\Рабочий стол\\bestThesis\\Artium\\Artium.csproj",
-        "packagesPath": "C:\\Users\\comra\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\comra\\OneDrive\\Рабочий стол\\bestThesis\\Artium\\obj\\",
+        "projectPath": "C:\\Users\\Сергей\\Desktop\\bestThesis\\Artium\\Artium.csproj",
+        "packagesPath": "C:\\Users\\Сергей\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Сергей\\Desktop\\bestThesis\\Artium\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\comra\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Сергей\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -40,13 +40,13 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
-            "Microsoft.EntityFrameworkCore.SqlServer": {
-              "target": "Package",
-              "version": "[5.0.3, )"
-            },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[3.1.5, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[5.0.0-alpha.2, )"
             }
           },
           "imports": [
