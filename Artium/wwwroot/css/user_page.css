@@ -11,8 +11,7 @@ body {
     background-size: cover;
 }
 .content {
-    height: 1000px;
-    background-color: white;
+    background-color: #fafafa;
     color: black;
 }
 .userpic {
@@ -25,7 +24,6 @@ body {
 }
 .botnav {
     padding: 20px 0;
-    background-color: #f1f1f1;
     color: black;
     border-bottom: 1px solid gray;
     border-top: 1px solid gray;
@@ -36,13 +34,7 @@ body {
 .user_name {
     font-weight: 800;
 }
-.post {
-    margin-top: 50px;
-    border: 1px solid gray;
-    padding: 50px;
-    background-color: #f1f1f1;
-    border-radius: 5px;
-}
+
 /* modal window  */
 .profileEditWin {
     max-width: 500px;
@@ -60,7 +52,7 @@ body {
 .newPostWin {
     padding-left: 40px;
     max-width: 800px;
-    background-color: #f1f1f1;
+    background-color: #fafafa;
     top: 10%; /* отступ сверху */
     right: 0;
     left: 0;
@@ -112,14 +104,17 @@ body {
     margin: 20px 0;
 }
 .new_post_button button{
-    border-radius: 50%;
-    font-size: 24px;
-    height: 50px;
-    width: 50px;
-    font-weight: bold;
+
+}
+.wall {
+    background-color: #fafafa;
 }
 .wall_nav {
     margin-top: 50px;
+    border: 1px solid black;
+    padding: 25px;
+    background-color: white;
+    border-radius: 5px;
 }
 
 .newPostWin form .row {

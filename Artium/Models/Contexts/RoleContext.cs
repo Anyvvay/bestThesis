@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Artium.Models.Objects;
 using Microsoft.EntityFrameworkCore;
 
-namespace Artium.Models
+namespace Artium.Models.Contexts
 {
     public class RoleContext : DbContext
     {

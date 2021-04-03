@@ -1,11 +1,10 @@
-﻿@model List<Artium.Models.Objects.WallPost>
-
+﻿
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewBag.login | Artium</title>
+    <title>@ViewBag.ownerLogin | Artium</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
           rel="stylesheet"
@@ -14,9 +13,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
             crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/98abbd269d.js" crossorigin="anonymous"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <link href="~/css/navbar.css" rel="stylesheet" />
     <link href="~/css/user_page.css" rel="stylesheet" />
+    <link href="~/css/UseProfile/wall_post.css" rel="stylesheet" />
 
     <script src="~/js/user_page.js"></script>
 
@@ -34,12 +35,12 @@
         }
         else
         {
-        <form method="post" asp-controller="Account" asp-action="Logout" id="logout_form">
-            <a href="javascript:{}" onclick="document.getElementById('logout_form').submit();
+            <form method="post" asp-controller="Account" asp-action="Logout" id="logout_form">
+                <a href="javascript:{}" onclick="document.getElementById('logout_form').submit();
                                     return false;" style="float: right; padding: 14px 16px;">
-                Log out
-            </a>
-        </form>
+                    Log out
+                </a>
+            </form>
         }
         <div class="search-container">
             <form action="/action_page.php">
@@ -50,19 +51,19 @@
     </div>
     <div style="height: 50px; width: 100%;"> </div>
     <!-- header user background image -->
-    <div class="head_canvas" style="background-image: url(@ViewBag.bguserpic)"></div>
+    <div class="head_canvas" style="background-image: url(@ViewBag.pageOwner.UserInfo.Bguserpic.Path)"></div>
     <!-- user profile -->
     <div class="profile">
         <div class="botnav">
             <div class="row main_info">
                 <div class="col-1"></div>
                 <div class="col-auto">
-                    <div class="userpic" style="background-image: url(@ViewBag.userpic)"></div>
+                    <div class="userpic" style="background-image: url(@ViewBag.pageOwner.UserInfo.Userpic.Path)"></div>
                 </div>
                 <div class="col">
-                    <h1 class="user_name">@ViewBag.name</h1>
-                    <h2 class="user_login">&#64;@ViewBag.login</h2>
-                    <p>4021 followers</p>
+                    <h1 class="user_name">@ViewBag.pageOwner.UserInfo.Name</h1>
+                    <h2 class="user_login">&#64;@ViewBag.pageOwner.Login</h2>
+                    <p>@ViewBag.pageOwner.UserInfo.Followers followers</p>
                 </div>
                 @if (ViewBag.owner)
                 {
@@ -75,7 +76,7 @@
             <div class="row description">
                 <div class="col-1"></div>
                 <div class="col">
-                    <p>@ViewBag.description</p>
+                    <p>@ViewBag.pageOwner.UserInfo.Description</p>
                 </div>
                 <div class="col-1"></div>
             </div>
@@ -98,14 +99,14 @@
             <div class="main">
                 <div class="row">
                     <div class="col">
-                        <label for="bgUserpic" class="edit_head_canvas" style="background-image: url(@ViewBag.bguserpic)"></label>
+                        <label for="bgUserpic" class="edit_head_canvas" style="background-image: url(@ViewBag.pageOwner.UserInfo.Bguserpic.Path)"></label>
                         <input type="file" id="bgUserpic" name="bgUserpic" class="visually-hidden" />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col"></div>
                     <div class="col-auto">
-                        <label for="userpic" class="edit_userpic" style="background-image: url(@ViewBag.userpic)"></label>
+                        <label for="userpic" class="edit_userpic" style="background-image: url(@ViewBag.pageOwner.UserInfo.Userpic.Path)"></label>
                         <input type="file" id="userpic" name="userpic" class="visually-hidden" />
                     </div>
                     <div class="col"></div>
@@ -120,7 +121,7 @@
                 <div class="row">
                     <div class="col-1"></div>
                     <div class="col">
-                        <input class="form-control" type="text" value="@ViewBag.name" name="name">
+                        <input class="form-control" type="text" value="@ViewBag.pageOwner.UserInfo.Name" name="name">
                     </div>
                     <div class="col-1"></div>
                 </div>
@@ -134,7 +135,7 @@
                 <div class="row">
                     <div class="col-1"></div>
                     <div class="col">
-                        <textarea class="form-control" type="text" name="description">@ViewBag.description</textarea>
+                        <textarea class="form-control" type="text" name="description">@ViewBag.pageOwner.UserInfo.Description</textarea>
                     </div>
                     <div class="col-1"></div>
                 </div>
@@ -156,7 +157,60 @@
             <div class="main">
                 <div class="row">
                     <div class="col-auto">
-                        <div class="userpic" style="background-image: url(@ViewBag.userpic); height: 50px; width: 50px; border: 2px solid black"></div>
+                        <div class="userpic" style="background-image: url(@ViewBag.pageOwner.UserInfo.Userpic.Path); height: 50px; width: 50px; border: 2px solid black"></div>
+                    </div>
+                    <div class="col">
+                        <textarea class="form-control" type="text" name="text"></textarea>
+                    </div>
+                    <div class="col-1"></div>
+                </div>
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col"></div>
+                    <div class="col-auto"><button class="btn btn-outline-dark" type="submit">Save</button></div>
+                    <div class="col-1"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- New comment modal window -->
+    <div id="newCommentWin" class="newPostWin">
+        <form asp-action="NewComment" asp-controller="Post" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="WallPostId" id="commented-wallpostid"  />
+            <div class="row">
+                <div class="col-auto">
+                    <button class="btn btn-outline-dark" onclick="closeNewCommentWin()" type="button">Close</button>
+                </div>
+                <div class="col"></div>
+                <div class="col-auto">
+                </div>
+                <div class="col-1"></div>
+            </div>
+            <div class="main">
+                <div class="row">
+                    <div class="col-auto">
+                        <div class="userpic" style="background-image: url(@ViewBag.pageOwner.UserInfo.Userpic.Path); height: 50px; width: 50px; border: 2px solid black"></div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <h1 id="commented-login"></h1>
+                            </div>
+                            <div class="col">
+                                <h1 id="commented-date"></h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p id="commented-text"></p>
+                            </div>
+                        </div>                   
+                    </div>
+                        <div class="col-1"></div>
+                    </div>
+                <div class="row">
+                    <div class="col-auto">
+                        <div class="userpic" style="background-image: url(@ViewBag.user.UserInfo.Userpic.Path); height: 50px; width: 50px; border: 2px solid black"></div>
                     </div>
                     <div class="col">
                         <textarea class="form-control" type="text" name="text"></textarea>
@@ -174,16 +228,19 @@
     </div>
     <!-- content -->
     <div class="wall">
-        <div class="wall_nav">
-            <div class="row">
-                <div class="col-1"></div>
-                <div class="col">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col">
+                <div class="wall_nav">
+                    @if (ViewBag.owner)
+                    {
                     <div class="new_post_button">
-                        <button class="btn btn-outline-dark" onclick="newPostWindow()">+</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="newPostWindow()"><i class="fas fa-pen"></i> Post</button>
                     </div>
+                    }               
                 </div>
-                <div class="col-1"></div>
             </div>
+            <div class="col-1"></div>
         </div>
         <div class="content">
             <div class="row">
@@ -191,29 +248,47 @@
                 <div class="col">
                     @foreach (var post in @ViewBag.WallPosts)
                     {
-                    <div class="post">
-                        <div class="row">
-                            <div class="col">
-                                <a href="/@post.GetUserLogin()">@post.GetUserLogin()</a>
+                        <div class="post" id="post-@post.Id" onclick="goToPost(@post.Id)">
+                            <div class="row">
+                                <div class="col-auto author_login">
+                                    @post.User.UserInfo.Name
+                                </div>
+                                <div class="col-auto author_login">
+                                    <a href="/@post.User.Login" id="post-login-@post.Id">&#64;@post.User.Login</a>
+                                </div>
+                                <div class="col-auto">
+                                    <p id="post-date-@post.Id">@post.Date</p>
+                                </div>
+                                <div class="col"></div>
+                                @if (ViewBag.User.Id == post.UserId)
+                                {
+                                    <div class="col-auto">
+                                        <form asp-action="DeletePost" asp-controller="User" method="post">
+                                            <input type="number" name="id" value="@post.Id" hidden />
+                                            <button class="btn btn-outline-secondary  btn-sm">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                }
                             </div>
-                            <div class="col">
-                                <p>@post.Date</p>
+                            <div class="row">
+                                <div class="col">
+                                    <p id="post-text-@post.Id">@post.Text</p>
+                                </div>
                             </div>
-                            <div class="col">
-                                <form asp-action="DeletePost" asp-controller="User" method="post">
-                                    <input type="number" name="id" value="@post.Id" hidden/>
-                                    <button>
-                                        delete
-                                    </button>
-                                </form>                                  
+                            <div class="row">
+                                <div class="col-auto">
+                                    <button class="btn btn-outline-success btn-sm"><i class="fas fa-heart"></i></button> 138
+                                </div>
+                                <div class="col-auto">
+                                    <button class="btn btn-outline-danger btn-sm"><i class="fas fa-heart-broken"></i></button> 23
+                                </div>
+                                <div class="col-auto">
+                                    <button class="btn btn-outline-secondary btn-sm" onclick="newCommentWindow(@post.Id)"><i class="fas fa-comment"></i></button> @post.Comments
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <p>@post.Text</p>
-                            </div>                        
-                        </div>
-                    </div>
                     }
                 </div>
                 <div class="col-3">

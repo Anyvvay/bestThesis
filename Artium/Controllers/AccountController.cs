@@ -1,4 +1,4 @@
-﻿    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +8,8 @@ using Artium.Models; // пространство имен UserContext и кла�
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Artium.Models.Objects;
+using Artium.Models.Contexts;
+using System;
 
 namespace AuthApp.Controllers
 {
@@ -61,14 +63,17 @@ namespace AuthApp.Controllers
                 if (user == null)
                 {
                     // добавляем пользователя в бд 
-                    User newUser = new User { Login = model.Login, Email = model.Email, Password = model.Password };
+                    Random rnd = new Random();
+                    UserInfo userInfo = new UserInfo { Name = model.Name, Description = "", BguserpicId = rnd.Next(1, 6), UserpicId = rnd.Next(1, 6), Followers = 0 };
+                    db.UserInfos.Add(userInfo);
+                    await db.SaveChangesAsync();
+                    User newUser = new User { Login = model.Login, Email = model.Email, Password = model.Password, UserInfoId = userInfo.Id};
                     db.Users.Add(newUser);
-                    db.UserInfos.Add(new UserInfo { Name = model.Name, User =  newUser, Description=""});
                     await db.SaveChangesAsync();
 
                     await Authenticate(model.Email); // аутентификация
 
-                    return RedirectToAction("Index", "Home");
+                    return LocalRedirect("~/" + newUser.Login);
                 }
                 else
                     ModelState.AddModelError("", "Некорректные логин и(или) пароль");

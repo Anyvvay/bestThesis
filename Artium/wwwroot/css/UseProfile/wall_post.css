@@ -1,0 +1,17 @@
+﻿.author_login a{
+    color: black;
+    text-decoration: none;
+}
+.author_login a:hover {
+    text-decoration: underline;
+}
+.post {
+    margin-top: 25px;
+    border: 1px solid black;
+    padding: 50px;
+    border-radius: 5px;
+    background-color: white;
+}
+    .post:hover {
+        background-color: #fafafa;
+    }

@@ -26,16 +26,25 @@ namespace Artium.Controllers
             db_post = post_context;
             _appEnvironment = appEnvironment;
         }
+
         [Route("{login}")]
         public async Task<IActionResult> Index(string login)
         {
             if (login != null)
             {
-                User user = await db_user.Users.FirstOrDefaultAsync(u => u.Login == login);
+                User userOwner = await db_user.Users
+                        .Include(u => u.UserInfo)
+                        .Include(u => u.UserInfo.Bguserpic)
+                        .Include(u => u.UserInfo.Userpic)
+                        .FirstOrDefaultAsync(u => u.Login == login);
+                User user = await db_user.Users
+                        .Include(u => u.UserInfo)
+                        .Include(u => u.UserInfo.Bguserpic)
+                        .Include(u => u.UserInfo.Userpic).FirstOrDefaultAsync(u => u.Login == User.Identity.Name);
 
-                if (user != null)
+                if (userOwner != null)
                 {
-                    if (User.Identity.Name == user.Login)
+                    if (User.Identity.Name == userOwner.Login)
                     {
                         ViewBag.owner = true;
                     }
@@ -53,37 +62,17 @@ namespace Artium.Controllers
                         ViewBag.isAuth = false;
                     }
 
-                    ViewBag.login = user.Login;
+                    ViewBag.ownerLogin = userOwner.Login;
 
-                    ViewBag.WallPosts = db_post.WallPosts.Where(u => u.UserId == user.Id);
-                    ViewBag.Users = db_post.Users.ToListAsync();
-
-                    UserInfo userInfo = await db_user.UserInfos.FirstOrDefaultAsync(i => i.User == user);
-                    ViewBag.description = userInfo.Description;
-                    ViewBag.name = userInfo.Name;
-
-                    Userpic userpic = await db_userpic.Userpics.FirstOrDefaultAsync(up => up.User == user);
-
-                    if (userpic != null)
-                    {
-                        ViewBag.userpic = userpic.Path;
-                    }
-                    else
-                    {
-                        Userpic defaultPic = await db_userpic.Userpics.FirstOrDefaultAsync(d => d.Id == 1);
-                        ViewBag.userpic = defaultPic.Path;
-                    }
-
-                    Bguserpic bguserpic = await db_userpic.Bguserpics.FirstOrDefaultAsync(up => up.User == user);
-                    if (bguserpic != null)
-                    {
-                        ViewBag.bguserpic = bguserpic.Path;
-                    }
-                    else
-                    {
-                        Bguserpic defaultBgPic = await db_userpic.Bguserpics.FirstOrDefaultAsync(d => d.Id == 1);
-                        ViewBag.bguserpic = defaultBgPic.Path;
-                    }
+                    ViewBag.WallPosts = db_post.WallPosts.Where(u => u.UserId == userOwner.Id)
+                        .Include(u => u.User)
+                        .Include(u => u.User.UserInfo)
+                        .Include(u => u.User.UserInfo.Bguserpic)
+                        .Include(u => u.User.UserInfo.Userpic);
+                    ViewBag.Users = db_user.Users.ToListAsync();
+                    
+                    ViewBag.pageOwner = userOwner;
+                    ViewBag.user = user;
                 }
                 else
                 {
@@ -95,7 +84,11 @@ namespace Artium.Controllers
         [HttpPost]
         public async Task<IActionResult> EditProfile(IFormFile bgUserpic, IFormFile userpic, string name, string description)
         {
-            User user = await db_user.Users.FirstOrDefaultAsync(u => u.Login == User.Identity.Name);
+            User userOwner = await db_user.Users
+                        .Include(u => u.UserInfo)
+                        .Include(u => u.UserInfo.Bguserpic)
+                        .Include(u => u.UserInfo.Userpic)
+                        .FirstOrDefaultAsync(u => u.Login == User.Identity.Name);
 
             if (bgUserpic != null)
             {
@@ -108,15 +101,25 @@ namespace Artium.Controllers
                     await bgUserpic.CopyToAsync(fileStream);
                 }
 
-                Bguserpic prevBgUserpic = await db_userpic.Bguserpics.FirstOrDefaultAsync(u => u.UserId == user.Id);
-                if (prevBgUserpic != null)
-                {
-                    db_userpic.Bguserpics.Remove(prevBgUserpic);
-                }
-
-                Bguserpic newBgUserpic = new Bguserpic { Path = path, UserId = user.Id };
+                Bguserpic newBgUserpic = new Bguserpic { Path = path };
+                Bguserpic prevBgUserpic = userOwner.UserInfo.Bguserpic;
                 db_userpic.Bguserpics.Add(newBgUserpic);
                 db_userpic.SaveChanges();
+
+                userOwner.UserInfo.BguserpicId = newBgUserpic.Id;
+                db_user.UserInfos.Update(userOwner.UserInfo);
+                db_user.SaveChanges();
+
+                if (prevBgUserpic != null)
+                {
+                    if (prevBgUserpic.Id != 1)
+                    {
+                        db_userpic.Bguserpics.Remove(prevBgUserpic);
+                        db_userpic.SaveChanges();
+                    }
+                }
+
+                db_userpic.Bguserpics.Add(newBgUserpic);          
             }
 
             if (userpic != null)
@@ -127,23 +130,31 @@ namespace Artium.Controllers
 
                 using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                 {
-                    await userpic.CopyToAsync(fileStream);
+                    await bgUserpic.CopyToAsync(fileStream);
                 }
 
-                Userpic prevUserpic = await db_userpic.Userpics.FirstOrDefaultAsync(u => u.UserId == user.Id);
-                if (prevUserpic != null)
-                {
-                    db_userpic.Userpics.Remove(prevUserpic);
-                }
-
-                Userpic newUserpic = new Userpic { Path = path, UserId = user.Id };
+                Userpic newUserpic = new Userpic { Path = path };
+                Userpic prevUserpic = userOwner.UserInfo.Userpic;
                 db_userpic.Userpics.Add(newUserpic);
                 db_userpic.SaveChanges();
+
+                userOwner.UserInfo.UserpicId = newUserpic.Id;
+                db_user.UserInfos.Update(userOwner.UserInfo);
+                db_user.SaveChanges();
+
+                if (prevUserpic != null)
+                {
+                    if (prevUserpic.Id != 1)
+                    {
+                        db_userpic.Userpics.Remove(prevUserpic);
+                        db_userpic.SaveChanges();
+                    }
+                }
+
+                db_userpic.Userpics.Add(newUserpic);
             }
 
-
-
-            UserInfo userInfo = await db_user.UserInfos.FirstOrDefaultAsync(u => u.UserId == user.Id);
+            UserInfo userInfo = await db_user.UserInfos.FirstOrDefaultAsync(u => u.Id == userOwner.UserInfoId);
             Console.WriteLine(userInfo.Name);
             if (userInfo != null)
             {
@@ -172,8 +183,8 @@ namespace Artium.Controllers
             if (user != null)
             {
                 if (text != null)
-                {
-                    WallPost wallPost = new WallPost { Text = text, UserId = user.Id, Date = DateTime.Now};
+                { 
+                    WallPost wallPost = new WallPost { Text = text, UserId = user.Id, Date = DateTime.Now, Likes = 0, Dislikes = 0, Comments = 0, Disabled = 0 };
                     db_post.WallPosts.Add(wallPost);
                     db_post.SaveChanges();
                 };
@@ -188,7 +199,8 @@ namespace Artium.Controllers
 
             if (post != null)
             {
-                db_post.WallPosts.Remove(post);
+                post.Disabled = 1;
+                db_post.WallPosts.Update(post);
                 db_post.SaveChanges();
             }
             return LocalRedirect("~/" + User.Identity.Name);
