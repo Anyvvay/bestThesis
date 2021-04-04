@@ -125,4 +125,12 @@ body {
 }
 .newPostWin .main button {
     margin-bottom: 20px;
-} 
+}
+.userpic_mini {
+    height: 50px;
+    width: 50px;
+    background-size: cover;
+    border-radius: 100px;
+    background-position: center;
+    border: 3px solid black;
+}

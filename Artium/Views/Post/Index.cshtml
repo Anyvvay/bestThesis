@@ -16,9 +16,9 @@
             crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/98abbd269d.js" crossorigin="anonymous"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="~/js/date_format.js"></script>
     <link href="~/css/navbar.css" rel="stylesheet" />
-    <link href="~/css/user_page.css" rel="stylesheet" />
-    <link href="~/css/UseProfile/wall_post.css" rel="stylesheet" />
+    <link href="~/css/WallPost/style.css" rel="stylesheet" />
 
     <script src="~/js/user_page.js"></script>
 
@@ -36,12 +36,12 @@
         }
         else
         {
-        <form method="post" asp-controller="Account" asp-action="Logout" id="logout_form">
-            <a href="javascript:{}" onclick="document.getElementById('logout_form').submit();
+            <form method="post" asp-controller="Account" asp-action="Logout" id="logout_form">
+                <a href="javascript:{}" onclick="document.getElementById('logout_form').submit();
                                     return false;" style="float: right; padding: 14px 16px;">
-                Log out
-            </a>
-        </form>
+                    Log out
+                </a>
+            </form>
         }
         <div class="search-container">
             <form action="/action_page.php">
@@ -50,173 +50,33 @@
             </form>
         </div>
     </div>
-    <div style="height: 50px; width: 100%;"> </div>
-    <!-- header user background image -->
-    <div class="head_canvas" style="background-image: url(@ViewBag.bguserpic)"></div>
-    <!-- user profile -->
-    <div class="profile">
-        <div class="botnav">
-            <div class="row main_info">
-                <div class="col-1"></div>
-                <div class="col-auto">
-                    <div class="userpic" style="background-image: url(@ViewBag.userpic)"></div>
-                </div>
-                <div class="col">
-                    <h1 class="user_name">@ViewBag.name</h1>
-                    <h2 class="user_login">&#64;@ViewBag.login</h2>
-                    <p>4021 followers</p>
-                </div>
-                @if (ViewBag.owner)
-                {
-                    <div class="col-auto">
-                        <button class="btn btn-outline-dark" onclick="showProfileEditWindow()">Edit profile</button>
-                    </div>
-                }
-                <div class="col-1"></div>
-            </div>
-            <div class="row description">
-                <div class="col-1"></div>
-                <div class="col">
-                    <p>@ViewBag.description</p>
-                </div>
-                <div class="col-1"></div>
-            </div>
-        </div>
-    </div>
-    <!-- User profile edit modal window -->
-    <div id="profileEditWin" class="profileEditWin">
-        <form asp-action="EditProfile" asp-controller="User" method="post" enctype="multipart/form-data" name="bg">
-            <div class="row">
-                <div class="col-1"></div>
-                <div class="col-auto">
-                    <button class="btn btn-outline-dark" onclick="closeEditWindow()" type="button">Close</button>
-                </div>
-                <div class="col text-center"><h2>Edit profile</h2></div>
-                <div class="col-auto">
-                    <button class="btn btn-outline-dark" type="submit">Save</button>
-                </div>
-                <div class="col-1"></div>
-            </div>
-            <div class="main">
-                <div class="row">
-                    <div class="col">
-                        <label for="bgUserpic" class="edit_head_canvas" style="background-image: url(@ViewBag.bguserpic)"></label>
-                        <input type="file" id="bgUserpic" name="bgUserpic" class="visually-hidden" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col"></div>
-                    <div class="col-auto">
-                        <label for="userpic" class="edit_userpic" style="background-image: url(@ViewBag.userpic)"></label>
-                        <input type="file" id="userpic" name="userpic" class="visually-hidden" />
-                    </div>
-                    <div class="col"></div>
-                </div>
-                <div class="row">
-                    <div class="col-1"></div>
-                    <div class="col">
-                        <h4>Name</h4>
-                    </div>
-                    <div class="col-1"></div>
-                </div>
-                <div class="row">
-                    <div class="col-1"></div>
-                    <div class="col">
-                        <input class="form-control" type="text" value="@ViewBag.name" name="name">
-                    </div>
-                    <div class="col-1"></div>
-                </div>
-                <div class="row">
-                    <div class="col-1"></div>
-                    <div class="col">
-                        <h4>Description</h4>
-                    </div>
-                    <div class="col-1"></div>
-                </div>
-                <div class="row">
-                    <div class="col-1"></div>
-                    <div class="col">
-                        <textarea class="form-control" type="text" name="description">@ViewBag.description</textarea>
-                    </div>
-                    <div class="col-1"></div>
-                </div>
-            </div>
-        </form>
-    </div>
-    <!-- New post modal window -->
-    <div id="newPostWin" class="newPostWin">
-        <form asp-action="NewPost" asp-controller="User" method="post" enctype="multipart/form-data">
-            <div class="row">
-                <div class="col-auto">
-                    <button class="btn btn-outline-dark" onclick="closeNewPostWin()" type="button">Close</button>
-                </div>
-                <div class="col"></div>
-                <div class="col-auto">
-                </div>
-                <div class="col-1"></div>
-            </div>
-            <div class="main">
-                <div class="row">
-                    <div class="col-auto">
-                        <div class="userpic" style="background-image: url(@ViewBag.userpic); height: 50px; width: 50px; border: 2px solid black"></div>
-                    </div>
-                    <div class="col">
-                        <textarea class="form-control" type="text" name="text"></textarea>
-                    </div>
-                    <div class="col-1"></div>
-                </div>
-                <div class="row">
-                    <div class="col-1"></div>
-                    <div class="col"></div>
-                    <div class="col-auto"><button class="btn btn-outline-dark" type="submit">Save</button></div>
-                    <div class="col-1"></div>
-                </div>
-            </div>
-        </form>
-    </div>
-    <!-- content -->
-    <div class="wall">
+    <div style="height: 50px; width: 100%;"></div>
+    <div class="content">
         <div class="row">
-            <div class="col-1"></div>
+            <div class="col-2"></div>
             <div class="col">
-                <div class="wall_nav">
-                    <div class="new_post_button">
-                        <button class="btn btn-outline-secondary btn-sm" onclick="newPostWindow()"><i class="fas fa-pen"></i> Post</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-1"></div>
-        </div>
-        <div class="content">
-            <div class="row">
-                <div class="col-1"></div>
-                <div class="col">
-                    @foreach (var post in @ViewBag.WallPosts)
-                    {
-                        <div class="post">
+                <div class="post">
+                    <div class="row">
+                        <div class="col-auto">
+                            <div class="userpic" style="background-image: url(@ViewBag.WallPost.User.UserInfo.Userpic.Path)"></div>
+                        </div>
+                        <div class="col">
                             <div class="row">
-                                <div class="col-auto author_login">
-                                    <a href="/@post.GetUserLogin()">&#64;@post.GetUserLogin()</a>
+                                <div class="col-auto">
+                                    <a>@ViewBag.WallPost.User.UserInfo.Name</a>
                                 </div>
                                 <div class="col-auto">
-                                    <p>@post.Date</p>
+                                    <a class="date">@ViewBag.WallPost.Date</a>
                                 </div>
-                                <div class="col"></div>
-                                @if (ViewBag.userId == post.UserId)
-                                {
-                                    <div class="col-auto">
-                                        <form asp-action="DeletePost" asp-controller="User" method="post">
-                                            <input type="number" name="id" value="@post.Id" hidden />
-                                            <button class="btn btn-outline-secondary  btn-sm">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                }
+                            </div>
+                            <div class="row">
+                                <div class="col-auto">
+                                    <a>&#64;@ViewBag.WallPost.User.Login</a>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <p>@post.Text</p>
+                                    <p>@ViewBag.WallPost.Text</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -227,25 +87,46 @@
                                     <button class="btn btn-outline-danger btn-sm"><i class="fas fa-heart-broken"></i></button> 23
                                 </div>
                                 <div class="col-auto">
-                                    <button class="btn btn-outline-secondary btn-sm" onclick="goToPost(@post.Id)"><i class="fas fa-comment"></i></button> 14
+                                    <button class="btn btn-outline-secondary btn-sm" onclick="newCommentWindow(@ViewBag.WallPost.Id)"><i class="fas fa-comment"></i></button> @ViewBag.WallPost.Comments
+                                </div>
+                                <div class="col"></div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                <div cla+ss="comments">
+                    @foreach (var comment in @ViewBag.Comments)
+                    {
+                    <div class="comment">
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="userpic" style="background-image: url(@comment.User.UserInfo.Userpic.Path)"></div>
+                            </div>
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <a>@comment.User.UserInfo.Name</a>
+                                    </div>
+                                    <div class="col-auto">
+                                        <a>&#64;@comment.WallPost.User.Login</a>
+                                    </div>
+                                    <div class="col-auto">
+                                        <a class="date">@comment.Date</a>
+                                    </div>
+                                    <div class="col"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p>@comment.Text</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
                     }
                 </div>
-                <div class="col-3">
-                    <div class="post">
-                        <p>User <button class="btn btn-outline-dark">FOLLOW</button></p>
-                        <p>User <button class="btn btn-outline-dark">FOLLOW</button></p>
-                        <p>User <button class="btn btn-outline-dark">FOLLOW</button></p>
-                        <p>User <button class="btn btn-outline-dark">FOLLOW</button></p>
-                        <p>User <button class="btn btn-outline-dark">FOLLOW</button></p>
-                        <p>User <button class="btn btn-outline-dark">FOLLOW</button></p>
-                        <p>User <button class="btn btn-outline-dark">FOLLOW</button></p>
-                    </div>
-                </div>
-                <div class="col-1"></div>
             </div>
+            <div class="col-2"></div>
         </div>
     </div>
 </body>

@@ -15,9 +15,10 @@
             crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/98abbd269d.js" crossorigin="anonymous"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="~/js/date_format.js"></script>
     <link href="~/css/navbar.css" rel="stylesheet" />
     <link href="~/css/user_page.css" rel="stylesheet" />
-    <link href="~/css/UseProfile/wall_post.css" rel="stylesheet" />
+    <link href="~/css/UserProfile/wall_post.css" rel="stylesheet" />
 
     <script src="~/js/user_page.js"></script>
 
@@ -197,7 +198,7 @@
                                 <h1 id="commented-login"></h1>
                             </div>
                             <div class="col">
-                                <h1 id="commented-date"></h1>
+                                <h1 id="commented-date" class="ddate"></h1>
                             </div>
                         </div>
                         <div class="row">
@@ -248,47 +249,56 @@
                 <div class="col">
                     @foreach (var post in @ViewBag.WallPosts)
                     {
-                        <div class="post" id="post-@post.Id" onclick="goToPost(@post.Id)">
-                            <div class="row">
-                                <div class="col-auto author_login">
-                                    @post.User.UserInfo.Name
-                                </div>
-                                <div class="col-auto author_login">
-                                    <a href="/@post.User.Login" id="post-login-@post.Id">&#64;@post.User.Login</a>
-                                </div>
-                                <div class="col-auto">
-                                    <p id="post-date-@post.Id">@post.Date</p>
-                                </div>
-                                <div class="col"></div>
-                                @if (ViewBag.User.Id == post.UserId)
-                                {
-                                    <div class="col-auto">
-                                        <form asp-action="DeletePost" asp-controller="User" method="post">
-                                            <input type="number" name="id" value="@post.Id" hidden />
-                                            <button class="btn btn-outline-secondary  btn-sm">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </form>
+                    <div class="post" id="post-@post.Id" onclick="goToPost(@post.Id)">            
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="userpic_mini" style="background-image: url(@post.User.UserInfo.Userpic.Path);"></div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="row">
+                                    <div class="col-auto author_login">
+                                        @post.User.UserInfo.Name
                                     </div>
-                                }
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <p id="post-text-@post.Id">@post.Text</p>
+                                    <div class="col-auto author_login">
+                                        <a href="/@post.User.Login" id="post-login-@post.Id">&#64;@post.User.Login</a>
+                                    </div>
+                                    <div class="col-auto">
+                                        <p id="post-date-@post.Id" class="date">@post.Date</p>
+                                    </div>
+                                    <div class="col"></div>
+                                    @if (ViewBag.User.Id == post.UserId)
+                                    {
+                                        <div class="col-auto">
+                                            <form asp-action="DeletePost" asp-controller="User" method="post">
+                                                <input type="number" name="id" value="@post.Id" hidden />
+                                                <button class="btn btn-outline-secondary  btn-sm">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p id="post-text-@post.Id">@post.Text</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <button class="btn btn-outline-success btn-sm"><i class="fas fa-heart"></i></button> 138
+                                    </div>
+                                    <div class="col-auto">
+                                        <button class="btn btn-outline-danger btn-sm"><i class="fas fa-heart-broken"></i></button> 23
+                                    </div>
+                                    <div class="col-auto">
+                                        <button class="btn btn-outline-secondary btn-sm" onclick="newCommentWindow(@post.Id)"><i class="fas fa-comment"></i></button> @post.Comments
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-auto">
-                                    <button class="btn btn-outline-success btn-sm"><i class="fas fa-heart"></i></button> 138
-                                </div>
-                                <div class="col-auto">
-                                    <button class="btn btn-outline-danger btn-sm"><i class="fas fa-heart-broken"></i></button> 23
-                                </div>
-                                <div class="col-auto">
-                                    <button class="btn btn-outline-secondary btn-sm" onclick="newCommentWindow(@post.Id)"><i class="fas fa-comment"></i></button> @post.Comments
-                                </div>
-                            </div>
+                            
                         </div>
+                        
+                    </div>
                     }
                 </div>
                 <div class="col-3">

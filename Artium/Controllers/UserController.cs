@@ -64,7 +64,9 @@ namespace Artium.Controllers
 
                     ViewBag.ownerLogin = userOwner.Login;
 
-                    ViewBag.WallPosts = db_post.WallPosts.Where(u => u.UserId == userOwner.Id)
+                    ViewBag.WallPosts = db_post.WallPosts
+                        .Where(u => u.UserId == userOwner.Id)
+                        .Where(u => u.Disabled == 0)
                         .Include(u => u.User)
                         .Include(u => u.User.UserInfo)
                         .Include(u => u.User.UserInfo.Bguserpic)
@@ -155,7 +157,7 @@ namespace Artium.Controllers
             }
 
             UserInfo userInfo = await db_user.UserInfos.FirstOrDefaultAsync(u => u.Id == userOwner.UserInfoId);
-            Console.WriteLine(userInfo.Name);
+
             if (userInfo != null)
             {
                 if (name != null)
