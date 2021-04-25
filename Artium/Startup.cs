@@ -43,6 +43,9 @@ namespace Artium
             services.AddDbContext<CommentContext>(optionsBuilder => optionsBuilder.UseMySql(
                connection,
                 new MySqlServerVersion(new Version(8, 0, 11))));
+            services.AddDbContext<UserFollowerContext>(optionsBuilder => optionsBuilder.UseMySql(
+               connection,
+                new MySqlServerVersion(new Version(8, 0, 11))));
 
             // установка конфигурации подключения
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

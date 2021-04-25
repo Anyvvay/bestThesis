@@ -18,12 +18,20 @@ namespace Artium.Controllers
         private UserContext db_user;
         private PicUserContext db_userpic;
         private WallPostContext db_post;
+        private UserFollowerContext db_follower;
         IWebHostEnvironment _appEnvironment;
-        public UserController(UserContext user_context, PicUserContext userpics_context, IWebHostEnvironment appEnvironment, WallPostContext post_context)
+        public UserController(
+            UserContext user_context,
+            PicUserContext userpics_context,
+            IWebHostEnvironment appEnvironment,
+            WallPostContext post_context,
+            UserFollowerContext follower_context
+            )
         {
             db_user = user_context;
             db_userpic = userpics_context;
             db_post = post_context;
+            db_follower = follower_context;
             _appEnvironment = appEnvironment;
         }
 
@@ -41,6 +49,19 @@ namespace Artium.Controllers
                         .Include(u => u.UserInfo)
                         .Include(u => u.UserInfo.Bguserpic)
                         .Include(u => u.UserInfo.Userpic).FirstOrDefaultAsync(u => u.Login == User.Identity.Name);
+
+                UserFollower Follower = await db_follower.Followers
+                        .Include(u => u.User)
+                        .Include(u => u.User.UserInfo)
+                        .Include(u => u.User.UserInfo.Userpic).FirstOrDefaultAsync(f => f.FollowerId == user.Id && f.User.Id == userOwner.Id);
+
+                if (Follower != null)
+                {
+                    ViewBag.isFollower = true;
+                } else
+                {
+                    ViewBag.isFollower = false;
+                }
 
                 if (userOwner != null)
                 {
@@ -196,7 +217,6 @@ namespace Artium.Controllers
         [HttpPost]
         public async Task<IActionResult> DeletePost(int id)
         {
-            Console.WriteLine(id);
             WallPost post = await db_post.WallPosts.FirstOrDefaultAsync(u => u.Id == id);
 
             if (post != null)
@@ -207,5 +227,54 @@ namespace Artium.Controllers
             }
             return LocalRedirect("~/" + User.Identity.Name);
         }
+        [HttpPost]
+        public async Task<ActionResult> Follow(int userId, int followerId)
+        {
+            User user = await db_user.Users
+                         .Include(u => u.UserInfo)
+                         .Include(u => u.UserInfo.Bguserpic)
+                         .Include(u => u.UserInfo.Userpic)
+                         .FirstOrDefaultAsync(u => u.Id == userId);
+            User follower = await db_user.Users
+                    .Include(u => u.UserInfo)
+                    .Include(u => u.UserInfo.Bguserpic)
+                    .Include(u => u.UserInfo.Userpic).FirstOrDefaultAsync(u => u.Id == followerId);
+
+            follower.UserInfo.Followers += 1;
+
+            UserFollower Follower = new UserFollower { FollowerId = follower.Id, UserID = user.Id };
+
+            db_follower.Followers.Add(Follower);
+            db_user.UserInfos.Update(follower.UserInfo);
+            db_follower.SaveChanges();
+            db_user.SaveChanges();
+
+            return LocalRedirect("~/" + User.Identity.Name);
+        }
+        [HttpPost]
+        public async Task<ActionResult> Unfollow(int userId, int followerId)
+        {
+            User user = await db_user.Users
+                         .Include(u => u.UserInfo)
+                         .Include(u => u.UserInfo.Bguserpic)
+                         .Include(u => u.UserInfo.Userpic)
+                         .FirstOrDefaultAsync(u => u.Id == userId);
+            User follower = await db_user.Users
+                    .Include(u => u.UserInfo)
+                    .Include(u => u.UserInfo.Bguserpic)
+                    .Include(u => u.UserInfo.Userpic).FirstOrDefaultAsync(u => u.Id == followerId);
+
+            follower.UserInfo.Followers -= 1;
+
+            UserFollower Follower = new UserFollower { FollowerId = follower.Id, UserID = user.Id };
+
+            db_follower.Followers.Remove(Follower);
+            db_user.UserInfos.Update(follower.UserInfo);
+            db_follower.SaveChanges();
+            db_user.SaveChanges();
+
+            return LocalRedirect("~/" + User.Identity.Name);
+        }
+
     }
 }

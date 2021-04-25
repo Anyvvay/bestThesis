@@ -6587,19 +6587,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Сергей\\.nuget\\packages\\": {}
+    "C:\\Users\\comra\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Сергей\\Desktop\\bestThesis\\Artium\\Artium.csproj",
+      "projectUniqueName": "C:\\Users\\comra\\OneDrive\\Рабочий стол\\bestThesis\\Artium\\Artium.csproj",
       "projectName": "Artium",
-      "projectPath": "C:\\Users\\Сергей\\Desktop\\bestThesis\\Artium\\Artium.csproj",
-      "packagesPath": "C:\\Users\\Сергей\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Сергей\\Desktop\\bestThesis\\Artium\\obj\\",
+      "projectPath": "C:\\Users\\comra\\OneDrive\\Рабочий стол\\bestThesis\\Artium\\Artium.csproj",
+      "packagesPath": "C:\\Users\\comra\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\comra\\OneDrive\\Рабочий стол\\bestThesis\\Artium\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Сергей\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\comra\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

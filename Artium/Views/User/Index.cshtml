@@ -16,6 +16,7 @@
     <script src="https://kit.fontawesome.com/98abbd269d.js" crossorigin="anonymous"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="~/js/date_format.js"></script>
+    <script src="~/js/wall_post.js"></script>
     <link href="~/css/navbar.css" rel="stylesheet" />
     <link href="~/css/user_page.css" rel="stylesheet" />
     <link href="~/css/UserProfile/wall_post.css" rel="stylesheet" />
@@ -62,7 +63,29 @@
                     <div class="userpic" style="background-image: url(@ViewBag.pageOwner.UserInfo.Userpic.Path)"></div>
                 </div>
                 <div class="col">
-                    <h1 class="user_name">@ViewBag.pageOwner.UserInfo.Name</h1>
+                    <div class="row">
+                        <div class="col-auto">
+                            <h1 class="user_name">@ViewBag.pageOwner.UserInfo.Name</h1>
+                        </div>
+                        <div class="col-auto">
+                            @if (!ViewBag.owner)
+                            {
+                                @if (!ViewBag.isFollower)
+                                {
+                                    <button class="btn btn-outline-primary" onclick="follow(@ViewBag.pageOwner.Id, @ViewBag.user.Id)">Follow</button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-outline-primary" onclick="unfollow(@ViewBag.pageOwner.Id, @ViewBag.user.Id)">Unfollow</button>
+                                }
+                            }
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col"></div>
+                    </div>
+                    
                     <h2 class="user_login">&#64;@ViewBag.pageOwner.Login</h2>
                     <p>@ViewBag.pageOwner.UserInfo.Followers followers</p>
                 </div>
